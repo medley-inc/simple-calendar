@@ -105,10 +105,25 @@ var Calendar = function (properties) {
     calendar.small = properties.small;
 
     calendar.i18n = merge(calendar.i18n, properties.i18n);
+
+    calendar.className = {
+        wrapperClass: '',
+        prevBtnClass: '',
+        prevBtnITagClass: '',
+        dateClass: '',
+        nextBtnClass: '',
+        nextBtnITagClass: '',
+        tableWrapperClass: '',
+        tableClass: '',
+        timeClass: ''
+    };
+
+    calendar.className = merge(calendar.className, properties.className);
+
     calendar.formatCell = properties.formatCell || function (date) {
         var style = {
             cursor: 'pointer'
-        }
+        };
         var claz = '',
             cal = this;
         if (+date === +this.actual()) {
@@ -203,7 +218,8 @@ var Calendar = function (properties) {
             cal = this,
             next = true,
             year,
-            previous = true;
+            previous = true,
+            className = this.className;
         //add dates
         //create data view
         date = new Date(cal.date().getFullYear(), cal.date().getMonth(), 1);
@@ -244,7 +260,7 @@ var Calendar = function (properties) {
         }
         dates = m.prop(all);
 
-        return m('.ui.row.four.column.sm-calendar' + (cal.small ? '.sm-calendar-small' : ''), {
+        return m('.sm-calendar' + className.wrapperClass + (cal.small ? '.sm-calendar-small' : ''), {
             config: function (el, init) {
                 if (!init) {
                     if (el.parentNode.className.indexOf('grid') < 0) {
@@ -257,7 +273,7 @@ var Calendar = function (properties) {
                 }
             }
         }, [
-            m('.column', {
+            m('.column' + className.prevBtnClass, {
                 style: 'padding-bottom: 0;'
             }, [
                 previous ? m('a[href=#].sm-calendar-arrow', {
@@ -266,11 +282,11 @@ var Calendar = function (properties) {
                         cal.date().setDate(cal.date().getDate() - daysInMonth(cal.date().getMonth(), cal.date().getFullYear()));
                     }
                 }, [
-                    m("i.angle.double.left.icon.sm-calendar-arrow"),
+                    m('i.sm-calendar-arrow' + className.prevBtnITagClass),
                     !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() - 1  < 0 ? cal.i18n.months.length - 1 : cal.date().getMonth() - 1]) : ''
                 ]) : ''
             ]),
-            m('.column.center.aligned.eight.wide', {
+            m('.column' + className.dataClass, {
                 style: 'padding-bottom: 0;'
             }, [
                 m('select',  {
@@ -293,7 +309,7 @@ var Calendar = function (properties) {
                 })),
                 calendar.editYear (cal.date)
             ]),
-            m('.column.right.aligned', {
+            m('.column' + className.nextBtnClass, {
                 style: 'padding-bottom: 0;'
             }, [
                 next ? m('a[href=#].sm-calendar-arrow', {
@@ -303,11 +319,11 @@ var Calendar = function (properties) {
                     }
                 }, [
                     !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() + 1  >= cal.i18n.months.length ? 0 : cal.date().getMonth() + 1]) : '',
-                    m("i.angle.double.right.icon.sm-calendar-arrow")
+                    m('i.sm-calendar-arrow' + className.nextBtnITagClass)
                 ]) : ''
             ]),
-            m('.column.sixteen.wide', [
-                m('table.ui.table.striped.celled.unstackable.seven.column.compact.small', [
+            m('.column' + className.tableWrapperClass, [
+                m('table' + className.tableClass, [
                     m('thead', [
                         m('tr', cal.i18n.days.map(function (item) {
                             return m('th', {
@@ -320,7 +336,7 @@ var Calendar = function (properties) {
                     }))
                 ])
             ]),
-            m('.column.center.aligned.sixteen.wide', {
+            m('.column' + className.timeClass, {
                 style: 'padding-top: 0;'
             }, properties.time ? [
                 m('select',  {
