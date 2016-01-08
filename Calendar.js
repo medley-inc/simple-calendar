@@ -99,7 +99,8 @@ var Calendar = function (properties) {
         monthsLong: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         daysLong: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        today: 'Today'
     };
 
     calendar.small = properties.small;
@@ -154,7 +155,7 @@ var Calendar = function (properties) {
                         e.preventDefault();
                     }
                 }, date.getDate()) :
-                date.getDate()
+            date.getDate()
         ]);
     };
 
@@ -379,7 +380,7 @@ var Calendar = function (properties) {
                         e.preventDefault();
                         cal.goToDate(new Date());
                     }
-                }, 'Today')
+                }, cal.i18n.today)
             ] : [
                 m('a[href="#"]', {
                     style: 'padding: 0 3px;float:right;',
@@ -387,7 +388,7 @@ var Calendar = function (properties) {
                         e.preventDefault();
                         cal.goToDate(new Date());
                     }
-                }, 'Today')
+                }, cal.i18n.today)
             ])
         ]);
     };
