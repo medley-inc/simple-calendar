@@ -1,7 +1,7 @@
-# sm-calendar
-Mithril semantic-ui calendar widget
+# simple-calendar
+Mithril calendar widget with minimum style.
 
-It requires mithril and semantic-ui-table and semantic-ui-grid
+It requires mithril.
 
 It is expected for mithril to be in global (m variable) or it will attempt to load it with `require('mithril')`, [webpack](http://webpack.github.io/docs/) its recommended
 
@@ -19,7 +19,6 @@ It is expected for mithril to be in global (m variable) or it will attempt to lo
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.10.3/semantic.min.css">
     <script src="bower_components/mithril/mithril.js"></script>
     <script src="Calendar.js"></script>
 </head>
@@ -107,6 +106,7 @@ It accepts the following properties, all of them are optional
     * **months**, array of string months in a small format `Jan, Feb` ...
     * **daysLong**, array of string days in a long format `Monday, Tuesday` ...
     * **days**, array of string days in a small format `Mon, Tue` ...
+    * **today**, string today today's link format.
     
 
 ## Functions
