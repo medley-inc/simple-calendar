@@ -220,7 +220,7 @@ var Calendar = function (properties) {
             next = true,
             year,
             previous = true,
-            className = this.className;
+            className = cal.className;
         //add dates
         //create data view
         date = new Date(cal.date().getFullYear(), cal.date().getMonth(), 1);
