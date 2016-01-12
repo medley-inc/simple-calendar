@@ -287,7 +287,7 @@ var Calendar = function (properties) {
                     !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() - 1  < 0 ? cal.i18n.months.length - 1 : cal.date().getMonth() - 1]) : ''
                 ]) : ''
             ]),
-            m('.column' + className.dataClass, {
+            m('.column' + className.dateClass, {
                 style: 'padding-bottom: 0;'
             }, [
                 m('select',  {
