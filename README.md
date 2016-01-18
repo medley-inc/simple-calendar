@@ -31,10 +31,9 @@ It is expected for mithril to be in global (m variable) or it will attempt to lo
 </html>
 ```
 
-```JavaScript
+```javascript
 (function (m, Calendar) {
     var module = {};
-
 
     module.controller = function () {
         module.vm.init();
@@ -101,6 +100,7 @@ It accepts the following properties, all of them are optional
  * formatCell, function to format the cell, recieves a date object,
  * time, boolean, to display the time
  * onclick, function to react when the cell its clicked, doesnt work if formatcell its passed too
+ * className, string to styling, see below.
  * i18n, object map with:
     * **monthsLong**, array of string months in a long format `January, February` ...
     * **months**, array of string months in a small format `Jan, Feb` ...
@@ -108,28 +108,48 @@ It accepts the following properties, all of them are optional
     * **days**, array of string days in a small format `Mon, Tue` ...
     * **today**, string today today's link format.
     
+## className
+
+`className` is object for setting calendar's parts class.
+
+* `wrapperClass`
+* `prevBtnClass`
+* `prevBtnITagClass`
+* `dateClass`
+* `nextBtnClass`
+* `nextBtnITagClass`
+* `tableWrapperClass`
+* `tableClass`
+* `timeClass`
 
 ## Functions
+
 Creating a calendar
-```JavaScrit
+
+```javascript
 var calendar = new Calendar({
     mindate: new Calendar();
 });
 ```
 Loading the view calendar
-```JavaScrit
+
+```javascript
 m('div', calendar.view())
 ```
+
 You can jump to a date with
-```JavaScrit
+
+```javascript
 calendar.goToDate(date); //date must be a Date object
 ```
 You can get the seleted date
-```JavaScrit
+
+```javascript
 calendar.getDate(); //returns Date object
 ```
 You can set the maxdate and mindate
-```JavaScrit
+
+```javascript
 calendar.setMaxDate(date);
 calendar.setMinDate(date);
 ```
