@@ -121,6 +121,16 @@ var Calendar = function (properties) {
 
     calendar.className = merge(calendar.className, properties.className);
 
+    calendar.color = {
+        today: '#FFFFFF',
+        selected: '#FFFFFF',
+        todayBg: '#00B5AD',
+        selectedBg: '#5BBD72'
+    };
+
+    calendar.color = merge(calendar.color, properties.color);
+
+    console.log(calendar.color);
     calendar.formatCell = properties.formatCell || function (date) {
         var style = {
             cursor: 'pointer'
@@ -128,12 +138,12 @@ var Calendar = function (properties) {
         var claz = '',
             cal = this;
         if (+date === +this.actual()) {
-            style['background-color'] = '#00b5ad';
-            style.color = '#fff';
+            style['background-color'] = calendar.color.todayBg;
+            style.color = calendar.color.today;
         }
         if (+date === +this.value()) {
-            style['background-color'] = '#5bbd72';
-            style.color = '#fff';
+            style['background-color'] = calendar.color.selectedBg;
+            style.color = calendar.color.selected;
         }
         if ((cal.mindate_nt && date < cal.mindate_nt) || (cal.maxdate_nt && date > cal.maxdate_nt)) {
             claz = '.disabled';

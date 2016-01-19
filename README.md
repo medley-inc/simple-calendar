@@ -107,6 +107,11 @@ It accepts the following properties, all of them are optional
     * **daysLong**, array of string days in a long format `Monday, Tuesday` ...
     * **days**, array of string days in a small format `Mon, Tue` ...
     * **today**, string today today's link format.
+ * color, string to styling cell.
+   * **today**, today's td color. Default color is `#FFFFFF`
+   * **selected**, selected td color. Default color is `#FFFFFF`
+   * **todayBg**, today's td background color. Default color is `#00B5AD`
+   * **selectedBg**, selected td background color. Default color is `#5BBD72`
     
 ## className
 
