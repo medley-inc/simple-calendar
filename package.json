@@ -17,7 +17,7 @@
   "author": "Ivan Torres <pinguxx@gmail.com> / HIRAKI Satoru <saruko313@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "HTTP://github.com/Layzie/simple-calendar/issues"
+    "url": "http://github.com/Layzie/simple-calendar/issues"
   },
   "homepage": "https://github.com/Layzie/simple-calendar",
   "dependencies": {
