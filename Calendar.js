@@ -130,7 +130,6 @@ var Calendar = function (properties) {
 
     calendar.color = merge(calendar.color, properties.color);
 
-    console.log(calendar.color);
     calendar.formatCell = properties.formatCell || function (date) {
         var style = {
             cursor: 'pointer'
