@@ -115,7 +115,7 @@ It accepts the following properties, all of them are optional
 
 ## className
 
-`className` is object for setting calendar's parts class. Put string as `document.querySelctor()` like.(ex: `.class.like.this`)
+`className` is object for setting calendar's parts class. Put string as `document.querySelctor()` argument like.(ex: `.class.like.this`)
 
 * `wrapperClass`
 * `prevBtnClass`
