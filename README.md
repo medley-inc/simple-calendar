@@ -112,10 +112,10 @@ It accepts the following properties, all of them are optional
    * **selected**, selected td color. Default color is `#FFFFFF`
    * **todayBg**, today's td background color. Default color is `#00B5AD`
    * **selectedBg**, selected td background color. Default color is `#5BBD72`
-    
+
 ## className
 
-`className` is object for setting calendar's parts class.
+`className` is object for setting calendar's parts class. Put string as `document.querySelctor()` like.(ex: `.class.like.this`)
 
 * `wrapperClass`
 * `prevBtnClass`
@@ -126,6 +126,8 @@ It accepts the following properties, all of them are optional
 * `tableWrapperClass`
 * `tableClass`
 * `timeClass`
+
+![calclass](simple-calendar.png)
 
 ## Functions
 
