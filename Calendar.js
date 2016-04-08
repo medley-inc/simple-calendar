@@ -21,6 +21,9 @@ var Calendar = function (properties) {
     if (calendar.maxdate) {
         calendar.maxdate_nt = new Date(calendar.maxdate.getFullYear(), calendar.maxdate.getMonth(), calendar.maxdate.getDate());
     }
+    if (properties.isDisabledCell) {
+        calendar.isDisabledCell = properties.isDisabledCell;
+    }
 
     if (calendar.mindate && +calendar.now() < +calendar.mindate) {
         calendar.now(calendar.mindate);
@@ -144,7 +147,7 @@ var Calendar = function (properties) {
             style['background-color'] = calendar.color.selectedBg;
             style.color = calendar.color.selected;
         }
-        if ((cal.mindate_nt && date < cal.mindate_nt) || (cal.maxdate_nt && date > cal.maxdate_nt)) {
+        if ((cal.mindate_nt && date < cal.mindate_nt) || (cal.maxdate_nt && date > cal.maxdate_nt) || (cal.isDisabledCell && cal.isDisabledCell(date))) {
             claz = '.disabled';
         }
         return m('td.center.aligned' + claz, {
