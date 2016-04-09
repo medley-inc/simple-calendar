@@ -111,15 +111,15 @@ var Calendar = function (properties) {
     calendar.i18n = merge(calendar.i18n, properties.i18n);
 
     calendar.className = {
-        wrapperClass: '',
+        wrapperClass: '.ui.row.four.column',
         prevBtnClass: '',
-        prevBtnITagClass: '',
-        dateClass: '',
-        nextBtnClass: '',
-        nextBtnITagClass: '',
-        tableWrapperClass: '',
-        tableClass: '',
-        timeClass: ''
+        prevBtnITagClass: '.angle.double.left.icon',
+        dateClass: '.center.aligned.eight.wide',
+        nextBtnClass: '.right.aligned',
+        nextBtnITagClass: '.angle.double.right.icon',
+        tableWrapperClass: '.sixteen.wide',
+        tableClass: '.ui.table.striped.celled.unstackable.seven.column.compact.small',
+        timeClass: '.center.aligned.sixteen.wide'
     };
 
     calendar.className = merge(calendar.className, properties.className);
