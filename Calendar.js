@@ -24,6 +24,9 @@ var Calendar = function (properties) {
     if (properties.isDisabledCell) {
         calendar.isDisabledCell = properties.isDisabledCell;
     }
+    if (properties.ondatechange) {
+        calendar.ondatechange = properties.ondatechange;
+    }
 
     if (calendar.mindate && +calendar.now() < +calendar.mindate) {
         calendar.now(calendar.mindate);
@@ -90,6 +93,9 @@ var Calendar = function (properties) {
                         return;
                     }
                     cal.date().setFullYear(this.value);
+                    if (cal.ondatechange) {
+                        cal.ondatechange(cal.date());
+                    }
                     cal.editingYear(false);
                 }
             }),
@@ -187,6 +193,9 @@ var Calendar = function (properties) {
         calendar.hours = m.prop(date.getHours());
         calendar.minutes = m.prop(date.getMinutes());
         calendar.value = m.prop(calendar.now());
+        if (calendar.ondatechange) {
+            calendar.ondatechange(calendar.date());
+        }
     };
 
     calendar.getDate = function () {
@@ -293,6 +302,9 @@ var Calendar = function (properties) {
                     onclick: function (e) {
                         e.preventDefault();
                         cal.date().setDate(cal.date().getDate() - daysInMonth(cal.date().getMonth(), cal.date().getFullYear()));
+                        if (cal.ondatechange) {
+                          cal.ondatechange(cal.date());
+                        }
                     }
                 }, [
                     m('i.sm-calendar-arrow' + className.prevBtnITagClass),
@@ -310,6 +322,9 @@ var Calendar = function (properties) {
                     },
                     onchange: function () {
                         cal.date().setMonth(this.value);
+                        if (cal.ondatechange) {
+                          cal.ondatechange(cal.date());
+                        }
                     }
                 }, cal.i18n.months.map(function (item, idx) {
                     if (cal.mindate && (+cal.date().getFullYear() <= +cal.mindate_nt.getFullYear()) && idx < cal.mindate.getMonth()) {
@@ -329,6 +344,9 @@ var Calendar = function (properties) {
                     onclick: function (e) {
                         e.preventDefault();
                         cal.date().setMonth(cal.date().getMonth() + 1);
+                        if (cal.ondatechange) {
+                          cal.ondatechange(cal.date());
+                        }
                     }
                 }, [
                     !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() + 1  >= cal.i18n.months.length ? 0 : cal.date().getMonth() + 1]) : '',
