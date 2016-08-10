@@ -21,6 +21,12 @@ var Calendar = function (properties) {
     if (calendar.maxdate) {
         calendar.maxdate_nt = new Date(calendar.maxdate.getFullYear(), calendar.maxdate.getMonth(), calendar.maxdate.getDate());
     }
+    if (properties.isDisabledCell) {
+        calendar.isDisabledCell = properties.isDisabledCell;
+    }
+    if (properties.ondatechange) {
+        calendar.ondatechange = properties.ondatechange;
+    }
 
     if (calendar.mindate && +calendar.now() < +calendar.mindate) {
         calendar.now(calendar.mindate);
@@ -87,6 +93,9 @@ var Calendar = function (properties) {
                         return;
                     }
                     cal.date().setFullYear(this.value);
+                    if (cal.ondatechange) {
+                        cal.ondatechange(cal.date());
+                    }
                     cal.editingYear(false);
                 }
             }),
@@ -99,27 +108,53 @@ var Calendar = function (properties) {
         monthsLong: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         daysLong: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        today: 'Today'
     };
 
     calendar.small = properties.small;
 
     calendar.i18n = merge(calendar.i18n, properties.i18n);
+
+    calendar.className = {
+        wrapperClass: '.ui.row.four.column',
+        controlWrapperClass: '',
+        prevBtnClass: '',
+        prevBtnITagClass: '.angle.double.left.icon',
+        dateClass: '.center.aligned.eight.wide',
+        nextBtnClass: '.right.aligned',
+        nextBtnITagClass: '.angle.double.right.icon',
+        tableWrapperClass: '.sixteen.wide',
+        tableClass: '.ui.table.striped.celled.unstackable.seven.column.compact.small',
+        timeClass: '.center.aligned.sixteen.wide'
+    };
+
+    calendar.className = merge(calendar.className, properties.className);
+
+    calendar.color = {
+        today: '#FFFFFF',
+        selected: '#FFFFFF',
+        todayBg: '#00B5AD',
+        selectedBg: '#5BBD72'
+    };
+
+    calendar.color = merge(calendar.color, properties.color);
+
     calendar.formatCell = properties.formatCell || function (date) {
         var style = {
             cursor: 'pointer'
-        }
+        };
         var claz = '',
             cal = this;
         if (+date === +this.actual()) {
-            style['background-color'] = '#00b5ad';
-            style.color = '#fff';
+            style['background-color'] = calendar.color.todayBg;
+            style.color = calendar.color.today;
         }
         if (+date === +this.value()) {
-            style['background-color'] = '#5bbd72';
-            style.color = '#fff';
+            style['background-color'] = calendar.color.selectedBg;
+            style.color = calendar.color.selected;
         }
-        if ((cal.mindate_nt && date < cal.mindate_nt) || (cal.maxdate_nt && date > cal.maxdate_nt)) {
+        if ((cal.mindate_nt && date < cal.mindate_nt) || (cal.maxdate_nt && date > cal.maxdate_nt) || (cal.isDisabledCell && cal.isDisabledCell(date))) {
             claz = '.disabled';
         }
         return m('td.center.aligned' + claz, {
@@ -139,7 +174,7 @@ var Calendar = function (properties) {
                         e.preventDefault();
                     }
                 }, date.getDate()) :
-                date.getDate()
+            date.getDate()
         ]);
     };
 
@@ -159,6 +194,9 @@ var Calendar = function (properties) {
         calendar.hours = m.prop(date.getHours());
         calendar.minutes = m.prop(date.getMinutes());
         calendar.value = m.prop(calendar.now());
+        if (calendar.ondatechange) {
+            calendar.ondatechange(calendar.date());
+        }
     };
 
     calendar.getDate = function () {
@@ -203,7 +241,8 @@ var Calendar = function (properties) {
             cal = this,
             next = true,
             year,
-            previous = true;
+            previous = true,
+            className = cal.className;
         //add dates
         //create data view
         date = new Date(cal.date().getFullYear(), cal.date().getMonth(), 1);
@@ -244,7 +283,7 @@ var Calendar = function (properties) {
         }
         dates = m.prop(all);
 
-        return m('.ui.row.four.column.sm-calendar' + (cal.small ? '.sm-calendar-small' : ''), {
+        return m('.sm-calendar' + className.wrapperClass + (cal.small ? '.sm-calendar-small' : ''), {
             config: function (el, init) {
                 if (!init) {
                     if (el.parentNode.className.indexOf('grid') < 0) {
@@ -257,57 +296,67 @@ var Calendar = function (properties) {
                 }
             }
         }, [
-            m('.column', {
-                style: 'padding-bottom: 0;'
-            }, [
-                previous ? m('a[href=#].sm-calendar-arrow', {
-                    onclick: function (e) {
-                        e.preventDefault();
-                        cal.date().setDate(cal.date().getDate() - daysInMonth(cal.date().getMonth(), cal.date().getFullYear()));
-                    }
+            m('.column' + className.controlWrapperClass, [
+                m('.column' + className.prevBtnClass, {
+                    style: 'padding-bottom: 0;'
                 }, [
-                    m("i.angle.double.left.icon.sm-calendar-arrow"),
-                    !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() - 1  < 0 ? cal.i18n.months.length - 1 : cal.date().getMonth() - 1]) : ''
-                ]) : ''
-            ]),
-            m('.column.center.aligned.eight.wide', {
-                style: 'padding-bottom: 0;'
-            }, [
-                m('select',  {
-                    style: 'border: 0;background: transparent;padding: 0 3px;cursor: pointer;-webkit-appearance: none;-moz-appearance: none;appearance: none;text-decoration: underline;display: inline;width: auto;',
-                    value: cal.date().getMonth(),
-                    config: function (el) {
-                        el.value = cal.date().getMonth();
-                    },
-                    onchange: function () {
-                        cal.date().setMonth(this.value);
-                    }
-                }, cal.i18n.months.map(function (item, idx) {
-                    if (cal.mindate && (+cal.date().getFullYear() <= +cal.mindate_nt.getFullYear()) && idx < cal.mindate.getMonth()) {
-                        return '';
-                    }
-                    if (cal.maxdate && (+cal.date().getFullYear() >= +cal.maxdate_nt.getFullYear()) && idx > cal.maxdate.getMonth()) {
-                        return '';
-                    }
-                    return m('option[value=' + idx + ']', !cal.small ? cal.i18n.monthsLong[idx] : cal.i18n.months[idx]);
-                })),
-                calendar.editYear (cal.date)
-            ]),
-            m('.column.right.aligned', {
-                style: 'padding-bottom: 0;'
-            }, [
-                next ? m('a[href=#].sm-calendar-arrow', {
-                    onclick: function (e) {
-                        e.preventDefault();
-                        cal.date().setMonth(cal.date().getMonth() + 1);
-                    }
+                    previous ? m('a[href=#].sm-calendar-arrow', {
+                        onclick: function (e) {
+                            e.preventDefault();
+                            cal.date().setDate(cal.date().getDate() - daysInMonth(cal.date().getMonth(), cal.date().getFullYear()));
+                            if (cal.ondatechange) {
+                                cal.ondatechange(cal.date());
+                            }
+                        }
+                    }, [
+                        m('i.sm-calendar-arrow' + className.prevBtnITagClass),
+                        !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() - 1  < 0 ? cal.i18n.months.length - 1 : cal.date().getMonth() - 1]) : ''
+                    ]) : ''
+                ]),
+                m('.column' + className.dateClass, {
+                    style: 'padding-bottom: 0;'
                 }, [
-                    !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() + 1  >= cal.i18n.months.length ? 0 : cal.date().getMonth() + 1]) : '',
-                    m("i.angle.double.right.icon.sm-calendar-arrow")
-                ]) : ''
+                    calendar.editYear (cal.date),
+                    m('select',  {
+                        value: cal.date().getMonth(),
+                        config: function (el) {
+                            el.value = cal.date().getMonth();
+                        },
+                        onchange: function () {
+                            cal.date().setMonth(this.value);
+                            if (cal.ondatechange) {
+                                cal.ondatechange(cal.date());
+                            }
+                        }
+                    }, cal.i18n.months.map(function (item, idx) {
+                        if (cal.mindate && (+cal.date().getFullYear() <= +cal.mindate_nt.getFullYear()) && idx < cal.mindate.getMonth()) {
+                            return '';
+                        }
+                        if (cal.maxdate && (+cal.date().getFullYear() >= +cal.maxdate_nt.getFullYear()) && idx > cal.maxdate.getMonth()) {
+                            return '';
+                        }
+                        return m('option[value=' + idx + ']', !cal.small ? cal.i18n.monthsLong[idx] : cal.i18n.months[idx]);
+                    }))
+                ]),
+                m('.column' + className.nextBtnClass, {
+                    style: 'padding-bottom: 0;'
+                }, [
+                    next ? m('a[href=#].sm-calendar-arrow', {
+                        onclick: function (e) {
+                            e.preventDefault();
+                            cal.date().setMonth(cal.date().getMonth() + 1);
+                            if (cal.ondatechange) {
+                                cal.ondatechange(cal.date());
+                            }
+                        }
+                    }, [
+                        !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() + 1  >= cal.i18n.months.length ? 0 : cal.date().getMonth() + 1]) : '',
+                        m('i.sm-calendar-arrow' + className.nextBtnITagClass)
+                    ]) : ''
+                ])
             ]),
-            m('.column.sixteen.wide', [
-                m('table.ui.table.striped.celled.unstackable.seven.column.compact.small', [
+            m('.column' + className.tableWrapperClass, [
+                m('table' + className.tableClass, [
                     m('thead', [
                         m('tr', cal.i18n.days.map(function (item) {
                             return m('th', {
@@ -320,7 +369,7 @@ var Calendar = function (properties) {
                     }))
                 ])
             ]),
-            m('.column.center.aligned.sixteen.wide', {
+            m('.column' + className.timeClass, {
                 style: 'padding-top: 0;'
             }, properties.time ? [
                 m('select',  {
@@ -363,7 +412,7 @@ var Calendar = function (properties) {
                         e.preventDefault();
                         cal.goToDate(new Date());
                     }
-                }, 'Today')
+                }, cal.i18n.today)
             ] : [
                 m('a[href="#"]', {
                     style: 'padding: 0 3px;float:right;',
@@ -371,7 +420,7 @@ var Calendar = function (properties) {
                         e.preventDefault();
                         cal.goToDate(new Date());
                     }
-                }, 'Today')
+                }, cal.i18n.today)
             ])
         ]);
     };

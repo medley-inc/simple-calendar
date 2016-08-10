@@ -1,7 +1,7 @@
-# sm-calendar
-Mithril semantic-ui calendar widget
+# simple-calendar
+Mithril calendar widget with minimum style.
 
-It requires mithril and semantic-ui-table and semantic-ui-grid
+It requires mithril.
 
 It is expected for mithril to be in global (m variable) or it will attempt to load it with `require('mithril')`, [webpack](http://webpack.github.io/docs/) its recommended
 
@@ -19,7 +19,6 @@ It is expected for mithril to be in global (m variable) or it will attempt to lo
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.10.3/semantic.min.css">
     <script src="bower_components/mithril/mithril.js"></script>
     <script src="Calendar.js"></script>
 </head>
@@ -32,10 +31,9 @@ It is expected for mithril to be in global (m variable) or it will attempt to lo
 </html>
 ```
 
-```JavaScript
+```javascript
 (function (m, Calendar) {
     var module = {};
-
 
     module.controller = function () {
         module.vm.init();
@@ -102,34 +100,63 @@ It accepts the following properties, all of them are optional
  * formatCell, function to format the cell, recieves a date object,
  * time, boolean, to display the time
  * onclick, function to react when the cell its clicked, doesnt work if formatcell its passed too
+ * className, string to styling, see below.
  * i18n, object map with:
     * **monthsLong**, array of string months in a long format `January, February` ...
     * **months**, array of string months in a small format `Jan, Feb` ...
     * **daysLong**, array of string days in a long format `Monday, Tuesday` ...
     * **days**, array of string days in a small format `Mon, Tue` ...
-    
+    * **today**, string today today's link format.
+ * color, string to styling cell.
+   * **today**, today's td color. Default color is `#FFFFFF`
+   * **selected**, selected td color. Default color is `#FFFFFF`
+   * **todayBg**, today's td background color. Default color is `#00B5AD`
+   * **selectedBg**, selected td background color. Default color is `#5BBD72`
+
+## className
+
+`className` is object for setting calendar's parts class. Put string as `document.querySelctor()` argument like.(ex: `.class.like.this`)
+
+* `wrapperClass`
+* `prevBtnClass`
+* `prevBtnITagClass`
+* `dateClass`
+* `nextBtnClass`
+* `nextBtnITagClass`
+* `tableWrapperClass`
+* `tableClass`
+* `timeClass`
+
+![calclass](simple-calendar.png)
 
 ## Functions
+
 Creating a calendar
-```JavaScrit
+
+```javascript
 var calendar = new Calendar({
     mindate: new Calendar();
 });
 ```
 Loading the view calendar
-```JavaScrit
+
+```javascript
 m('div', calendar.view())
 ```
+
 You can jump to a date with
-```JavaScrit
+
+```javascript
 calendar.goToDate(date); //date must be a Date object
 ```
 You can get the seleted date
-```JavaScrit
+
+```javascript
 calendar.getDate(); //returns Date object
 ```
 You can set the maxdate and mindate
-```JavaScrit
+
+```javascript
 calendar.setMaxDate(date);
 calendar.setMinDate(date);
 ```

@@ -1,26 +1,25 @@
 {
-  "name": "sm-calendar",
+  "name": "simple-calendar",
   "version": "0.1.0",
-  "description": "mithril semantic-ui calendar widget",
+  "description": "Mithril calendar widget with minimum style",
   "main": "Calendar.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pinguxx/sm-calendar.git"
+    "url": "https://github.com/Layzie/simple-calendar.git"
   },
   "keywords": [
     "mithril",
-    "semantic-ui",
     "calendar"
   ],
-  "author": "Ivan Torres <pinguxx@gmail.com>",
+  "author": "Ivan Torres <pinguxx@gmail.com> / HIRAKI Satoru <saruko313@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/pinguxx/sm-calendar/issues"
+    "url": "http://github.com/Layzie/simple-calendar/issues"
   },
-  "homepage": "https://github.com/pinguxx/sm-calendar",
+  "homepage": "https://github.com/Layzie/simple-calendar",
   "dependencies": {
     "mithril": "^0.2.0"
   }
