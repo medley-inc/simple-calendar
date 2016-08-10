@@ -318,7 +318,6 @@ var Calendar = function (properties) {
                 }, [
                     calendar.editYear (cal.date),
                     m('select',  {
-                        style: 'border: 0;background: transparent;padding: 0 3px;cursor: pointer;-webkit-appearance: none;-moz-appearance: none;appearance: none;text-decoration: underline;display: inline;width: auto;',
                         value: cal.date().getMonth(),
                         config: function (el) {
                             el.value = cal.date().getMonth();
