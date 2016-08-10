@@ -118,6 +118,7 @@ var Calendar = function (properties) {
 
     calendar.className = {
         wrapperClass: '.ui.row.four.column',
+        controlWrapperClass: '',
         prevBtnClass: '',
         prevBtnITagClass: '.angle.double.left.icon',
         dateClass: '.center.aligned.eight.wide',
@@ -295,63 +296,65 @@ var Calendar = function (properties) {
                 }
             }
         }, [
-            m('.column' + className.prevBtnClass, {
-                style: 'padding-bottom: 0;'
-            }, [
-                previous ? m('a[href=#].sm-calendar-arrow', {
-                    onclick: function (e) {
-                        e.preventDefault();
-                        cal.date().setDate(cal.date().getDate() - daysInMonth(cal.date().getMonth(), cal.date().getFullYear()));
-                        if (cal.ondatechange) {
-                          cal.ondatechange(cal.date());
-                        }
-                    }
+            m('.column' + className.controlWrapperClass, [
+                m('.column' + className.prevBtnClass, {
+                    style: 'padding-bottom: 0;'
                 }, [
-                    m('i.sm-calendar-arrow' + className.prevBtnITagClass),
-                    !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() - 1  < 0 ? cal.i18n.months.length - 1 : cal.date().getMonth() - 1]) : ''
-                ]) : ''
-            ]),
-            m('.column' + className.dateClass, {
-                style: 'padding-bottom: 0;'
-            }, [
-                m('select',  {
-                    style: 'border: 0;background: transparent;padding: 0 3px;cursor: pointer;-webkit-appearance: none;-moz-appearance: none;appearance: none;text-decoration: underline;display: inline;width: auto;',
-                    value: cal.date().getMonth(),
-                    config: function (el) {
-                        el.value = cal.date().getMonth();
-                    },
-                    onchange: function () {
-                        cal.date().setMonth(this.value);
-                        if (cal.ondatechange) {
-                          cal.ondatechange(cal.date());
+                    previous ? m('a[href=#].sm-calendar-arrow', {
+                        onclick: function (e) {
+                            e.preventDefault();
+                            cal.date().setDate(cal.date().getDate() - daysInMonth(cal.date().getMonth(), cal.date().getFullYear()));
+                            if (cal.ondatechange) {
+                                cal.ondatechange(cal.date());
+                            }
                         }
-                    }
-                }, cal.i18n.months.map(function (item, idx) {
-                    if (cal.mindate && (+cal.date().getFullYear() <= +cal.mindate_nt.getFullYear()) && idx < cal.mindate.getMonth()) {
-                        return '';
-                    }
-                    if (cal.maxdate && (+cal.date().getFullYear() >= +cal.maxdate_nt.getFullYear()) && idx > cal.maxdate.getMonth()) {
-                        return '';
-                    }
-                    return m('option[value=' + idx + ']', !cal.small ? cal.i18n.monthsLong[idx] : cal.i18n.months[idx]);
-                })),
-                calendar.editYear (cal.date)
-            ]),
-            m('.column' + className.nextBtnClass, {
-                style: 'padding-bottom: 0;'
-            }, [
-                next ? m('a[href=#].sm-calendar-arrow', {
-                    onclick: function (e) {
-                        e.preventDefault();
-                        cal.date().setMonth(cal.date().getMonth() + 1);
-                        if (cal.ondatechange) {
-                          cal.ondatechange(cal.date());
-                        }
-                    }
+                    }, [
+                        m('i.sm-calendar-arrow' + className.prevBtnITagClass),
+                        !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() - 1  < 0 ? cal.i18n.months.length - 1 : cal.date().getMonth() - 1]) : ''
+                    ]) : ''
+                ]),
+                m('.column' + className.dateClass, {
+                    style: 'padding-bottom: 0;'
                 }, [
-                    !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() + 1  >= cal.i18n.months.length ? 0 : cal.date().getMonth() + 1]) : '',
-                    m('i.sm-calendar-arrow' + className.nextBtnITagClass)
-                ]) : ''
+                    calendar.editYear (cal.date),
+                    m('select',  {
+                        style: 'border: 0;background: transparent;padding: 0 3px;cursor: pointer;-webkit-appearance: none;-moz-appearance: none;appearance: none;text-decoration: underline;display: inline;width: auto;',
+                        value: cal.date().getMonth(),
+                        config: function (el) {
+                            el.value = cal.date().getMonth();
+                        },
+                        onchange: function () {
+                            cal.date().setMonth(this.value);
+                            if (cal.ondatechange) {
+                                cal.ondatechange(cal.date());
+                            }
+                        }
+                    }, cal.i18n.months.map(function (item, idx) {
+                        if (cal.mindate && (+cal.date().getFullYear() <= +cal.mindate_nt.getFullYear()) && idx < cal.mindate.getMonth()) {
+                            return '';
+                        }
+                        if (cal.maxdate && (+cal.date().getFullYear() >= +cal.maxdate_nt.getFullYear()) && idx > cal.maxdate.getMonth()) {
+                            return '';
+                        }
+                        return m('option[value=' + idx + ']', !cal.small ? cal.i18n.monthsLong[idx] : cal.i18n.months[idx]);
+                    }))
+                ]),
+                m('.column' + className.nextBtnClass, {
+                    style: 'padding-bottom: 0;'
+                }, [
+                    next ? m('a[href=#].sm-calendar-arrow', {
+                        onclick: function (e) {
+                            e.preventDefault();
+                            cal.date().setMonth(cal.date().getMonth() + 1);
+                            if (cal.ondatechange) {
+                                cal.ondatechange(cal.date());
+                            }
+                        }
+                    }, [
+                        !cal.small ? m('span', cal.i18n.monthsLong[cal.date().getMonth() + 1  >= cal.i18n.months.length ? 0 : cal.date().getMonth() + 1]) : '',
+                        m('i.sm-calendar-arrow' + className.nextBtnITagClass)
+                    ]) : ''
+                ])
             ]),
             m('.column' + className.tableWrapperClass, [
                 m('table' + className.tableClass, [
